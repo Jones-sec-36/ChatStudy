@@ -71,8 +71,67 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 
 Client-server chat applications are versatile tools that facilitate real-time communication between users over a network. They incorporate various components, including server-side and client-side elements, and must consider factors such as security, scalability, and concurrency. As technology continues to advance, client-server chat applications remain integral for collaborative communication in various domains.
 
-Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
+Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative 
+communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
 
+##client.py
+~~~
+import socket
+
+def client_program():
+    host = "127.0.0.1"   #
+    port = 5000
+
+    client_socket = socket.socket()
+    client_socket.connect((host, port))
+
+    message = input(" -> ")
+
+    while message.lower().strip() != 'bye':
+        client_socket.send(message.encode())
+        data = client_socket.recv(1024).decode()
+        print('Received from server: ' + data)
+        message = input(" -> ")
+
+    client_socket.close()
+
+if __name__ == '__main__':
+    client_program()
+~~~
+
+## output
+<img width="1703" height="590" alt="Screenshot 2025-09-29 110102" src="https://github.com/user-attachments/assets/fdca4f95-f5f4-48d3-808e-248fe60a0a3f" />
+
+## server.py
+~~~
+import socket
+
+def server_program():
+    host = "127.0.0.1"   # localhost (works better on Windows)
+    port = 5000
+
+    server_socket = socket.socket()
+    server_socket.bind((host, port))
+
+    server_socket.listen(2)
+    conn, address = server_socket.accept()
+    print("Connection from: " + str(address))
+    while True:
+        data = conn.recv(1024).decode()
+        if not data:
+            break
+        print("From connected user: " + str(data))
+        data = input(' -> ')
+        conn.send(data.encode())
+
+    conn.close()
+
+if __name__ == '__main__':
+    server_program()
+~~~
+## OUTPUT
+
+<img width="1024" height="517" alt="Screenshot 2025-09-29 110517" src="https://github.com/user-attachments/assets/2513dceb-62ef-47ef-b073-cb0655291d62" />
 
 ## Result:
 
